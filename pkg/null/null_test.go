@@ -1,6 +1,7 @@
 package null
 
 import (
+	"errors"
 	"github.com/hanaboso/go-log/pkg"
 	"testing"
 )
@@ -12,5 +13,7 @@ func TestLogger(t *testing.T) {
 	logger.Debug("")
 	logger.Warn("")
 	logger.Error(nil)
+	logger.ErrorWrap("", errors.New(""))
 	logger.Fatal(nil)
+	logger.FatalWrap("", nil)
 }
