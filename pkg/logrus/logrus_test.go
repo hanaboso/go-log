@@ -35,3 +35,16 @@ func TestLogger(t *testing.T) {
 	}()
 	logger.Fatal(errors.New("fatal"))
 }
+
+func TestLogger_FatalWrap(t *testing.T) {
+	logger := NewLogger()
+
+	defer func() {
+		if r := recover(); r != nil {
+			require.True(t, true)
+		} else {
+			require.True(t, false)
+		}
+	}()
+	logger.FatalWrap("fatal", errors.New("fatal"))
+}

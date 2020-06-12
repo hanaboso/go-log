@@ -46,6 +46,13 @@ func (log *Logger) Error(err error) {
 
 // ErrorWrap wraps error
 func (log *Logger) ErrorWrap(message string, err error) {
+	_, file, line, _ := runtime.Caller(1)
+	_, file2, line2, _ := runtime.Caller(2)
+	if log.data == nil {
+		log.data = make(map[string]interface{})
+	}
+	log.data["stacktrace"] = fmt.Sprintf("%s: %d\n%s: %d", file, line, file2, line2)
+
 	log.log.WithFields(log.data).Errorf("%s, reason: %v", message, err)
 	log.data = nil
 }
@@ -59,6 +66,18 @@ func (log *Logger) Fatal(err error) {
 	log.data["stacktrace"] = fmt.Sprintf("%s: %d", file, line)
 
 	log.log.WithFields(log.data).Fatalf(err.Error())
+	log.data = nil
+}
+
+// FatalWrap fatal
+func (log *Logger) FatalWrap(message string, err error) {
+	_, file, line, _ := runtime.Caller(1)
+	if log.data == nil {
+		log.data = make(map[string]interface{})
+	}
+	log.data["stacktrace"] = fmt.Sprintf("%s: %d", file, line)
+
+	log.log.WithFields(log.data).Fatalf("%s, reason: %v", message, err)
 	log.data = nil
 }
 

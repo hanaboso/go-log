@@ -24,6 +24,7 @@ type Logger interface {
 	Error(err error)
 	ErrorWrap(message string, err error)
 	Fatal(err error)
+	FatalWrap(message string, err error)
 	WithFields(data map[string]interface{}) Logger
 	SetLevel(level LogLevel)
 }

@@ -15,4 +15,5 @@ func TestLogger(t *testing.T) {
 	logger.Error(nil)
 	logger.ErrorWrap("", errors.New(""))
 	logger.Fatal(nil)
+	logger.FatalWrap("", nil)
 }
