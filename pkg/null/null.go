@@ -19,6 +19,9 @@ func (log *Logger) Warn(message string, args ...interface{}) {}
 // Error error
 func (log *Logger) Error(err error) {}
 
+// ErrorWrap wraps error
+func (log *Logger) ErrorWrap(message string, err error) {}
+
 // Fatal fatal
 func (log *Logger) Fatal(err error) {}
 

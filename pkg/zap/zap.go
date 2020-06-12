@@ -32,6 +32,12 @@ func (log *Logger) Error(err error) {
 	log.log.With(log.fields()...).Error(err.Error())
 }
 
+// ErrorWrap wraps error
+func (log *Logger) ErrorWrap(message string, err error) {
+	log.log.With(log.fields()...).Errorf("%s, reason: %v", message, err)
+
+}
+
 // Fatal fatal
 func (log *Logger) Fatal(err error) {
 	log.log.With(log.fields()...).Panicf(err.Error())

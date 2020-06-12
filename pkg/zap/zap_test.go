@@ -24,6 +24,7 @@ func TestLogger(t *testing.T) {
 	logger.Info("f: %s", "info")
 	logger.Warn("f: %s", "warning")
 	logger.Error(errors.New("error"))
+	logger.ErrorWrap("failed testing", errors.New("cause"))
 
 	defer func() {
 		if r := recover(); r != nil {

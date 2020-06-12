@@ -44,6 +44,12 @@ func (log *Logger) Error(err error) {
 	log.data = nil
 }
 
+// ErrorWrap wraps error
+func (log *Logger) ErrorWrap(message string, err error) {
+	log.log.WithFields(log.data).Errorf("%s, reason: %v", message, err)
+	log.data = nil
+}
+
 // Fatal fatal
 func (log *Logger) Fatal(err error) {
 	_, file, line, _ := runtime.Caller(1)
