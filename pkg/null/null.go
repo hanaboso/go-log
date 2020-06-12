@@ -19,8 +19,14 @@ func (log *Logger) Warn(message string, args ...interface{}) {}
 // Error error
 func (log *Logger) Error(err error) {}
 
+// ErrorWrap wraps error
+func (log *Logger) ErrorWrap(message string, err error) {}
+
 // Fatal fatal
 func (log *Logger) Fatal(err error) {}
+
+// FatalWrap wraps error
+func (log *Logger) FatalWrap(message string, err error) {}
 
 // WithFields preregister fields into logger
 func (log *Logger) WithFields(data map[string]interface{}) pkg.Logger {
