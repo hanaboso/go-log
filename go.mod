@@ -1,6 +1,6 @@
 module github.com/hanaboso/go-log
 
-go 1.13
+go 1.15
 
 require (
 	github.com/sirupsen/logrus v1.4.2
