@@ -82,10 +82,11 @@ func (log *Logger) FatalWrap(message string, err error) {
 }
 
 // WithFields preregister fields into logger
-func (log *Logger) WithFields(data map[string]interface{}) pkg.Logger {
-	log.data = data
-
-	return log
+func (log Logger) WithFields(data map[string]interface{}) pkg.Logger {
+	return &Logger{
+		log:  log.log,
+		data: data,
+	}
 }
 
 // SetLevel set level
