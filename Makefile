@@ -25,6 +25,7 @@ go-update:
 	$(DE) su-exec root chown dev:dev go.mod go.sum
 
 init-dev: docker-up-force
+	$(DE) id -u
 	$(DE) go mod download
 
 lint:

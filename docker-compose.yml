@@ -7,7 +7,6 @@ services:
     volumes:
       - ./:/app
       - ${GOPATH}/pkg:/go/pkg
-      - ${DOCKER_SOCKET_PATH}:/var/run/docker.sock
     environment:
       DEV_UID: ${DEV_UID}
       DEV_GID: ${DEV_GID}
