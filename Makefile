@@ -4,8 +4,6 @@ DE=docker-compose exec -T app
 .env:
 	sed -e 's/{DEV_UID}/$(shell id -u)/g' \
 		-e 's/{DEV_GID}/$(shell id -g)/g' \
-		-e 's|{GITLAB_CI}|$(shell [ ! -z "$$GITLAB_CI" ] && echo true || echo false)|g' \
-		-e 's|{DOCKER_SOCKET_PATH}|$(shell test -S /var/run/docker-$${USER}.sock && echo /var/run/docker-$${USER}.sock || echo /var/run/docker.sock)|g' \
 		.env.dist >> .env; \
 
 docker-up-force: .env
