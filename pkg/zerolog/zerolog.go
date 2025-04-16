@@ -16,39 +16,39 @@ type Logger struct {
 	data map[string]interface{}
 }
 
-func (this Logger) Debug(message string, args ...interface{}) {
-	log.Debug().Fields(this.fields()).Msg(fmt.Sprintf(message, args...))
+func (l *Logger) Debug(message string, args ...interface{}) {
+	log.Debug().Fields(l.fields()).Msg(fmt.Sprintf(message, args...))
 }
 
-func (this Logger) Info(message string, args ...interface{}) {
-	log.Info().Fields(this.fields()).Msg(fmt.Sprintf(message, args...))
+func (l *Logger) Info(message string, args ...interface{}) {
+	log.Info().Fields(l.fields()).Msg(fmt.Sprintf(message, args...))
 }
 
-func (this Logger) Warn(message string, args ...interface{}) {
-	log.Warn().Fields(this.fields()).Msg(fmt.Sprintf(message, args...))
+func (l *Logger) Warn(message string, args ...interface{}) {
+	log.Warn().Fields(l.fields()).Msg(fmt.Sprintf(message, args...))
 }
 
-func (this Logger) Error(err error) {
-	log.Error().Fields(this.fields()).Err(err).Send()
+func (l *Logger) Error(err error) {
+	log.Error().Fields(l.fields()).Err(err).Send()
 }
 
-func (this Logger) ErrorWrap(message string, err error) {
-	log.Error().Fields(this.fields()).Err(fmt.Errorf("%s, reason: %v", message, err)).Send()
+func (l *Logger) ErrorWrap(message string, err error) {
+	log.Error().Fields(l.fields()).Err(fmt.Errorf("%s, reason: %v", message, err)).Send()
 }
 
-func (this Logger) Fatal(err error) {
-	log.Fatal().Fields(this.fields()).Err(err).Send()
+func (l *Logger) Fatal(err error) {
+	log.Fatal().Fields(l.fields()).Err(err).Send()
 }
 
-func (this Logger) FatalWrap(message string, err error) {
-	log.Fatal().Fields(this.fields()).Err(fmt.Errorf("%s, reason: %v", message, err)).Send()
+func (l *Logger) FatalWrap(message string, err error) {
+	log.Fatal().Fields(l.fields()).Err(fmt.Errorf("%s, reason: %v", message, err)).Send()
 }
 
-func (this Logger) SetLevel(level pkg.LogLevel) {
+func (l *Logger) SetLevel(level pkg.LogLevel) {
 	switch level {
 	case pkg.DEBUG:
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
-		zerolog.ErrorStackMarshaler = func(err error) interface{} {
+		zerolog.ErrorStackMarshaler = func(_ error) interface{} {
 			return ParseTrace(debug.Stack())
 		}
 	case pkg.INFO:
@@ -62,8 +62,8 @@ func (this Logger) SetLevel(level pkg.LogLevel) {
 	}
 }
 
-func (this Logger) WithFields(data map[string]interface{}) pkg.Logger {
-	return Logger{
+func (l *Logger) WithFields(data map[string]interface{}) pkg.Logger {
+	return &Logger{
 		data: data,
 	}
 }
@@ -82,24 +82,24 @@ func NewLogger(sender io.Writer) pkg.Logger {
 	zerolog.ErrorFieldName = "message"
 	zerolog.ErrorStackFieldName = "trace"
 
-	return Logger{
+	return &Logger{
 		data: nil,
 	}
 }
 
-func (this *Logger) fields() []interface{} {
-	l := make([]interface{}, len(this.data)*2)
+func (l *Logger) fields() []interface{} {
+	f := make([]interface{}, len(l.data)*2)
 
 	i := 0
-	for key, value := range this.data {
-		l[i] = key
-		l[i+1] = value
+	for key, value := range l.data {
+		f[i] = key
+		f[i+1] = value
 		i += 2
 	}
 
-	this.data = nil
+	l.data = nil
 
-	return l
+	return f
 }
 
 func ParseTrace(trace []byte) []interface{} {

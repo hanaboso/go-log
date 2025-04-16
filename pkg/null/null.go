@@ -1,3 +1,4 @@
+// Package null logger
 package null
 
 import (
@@ -36,7 +37,7 @@ func (log Logger) WithFields(_ map[string]interface{}) pkg.Logger {
 // SetLevel set level
 func (log Logger) SetLevel(_ pkg.LogLevel) {}
 
-// NewLogger new logrus logger
+// NewLogger new Null logger
 func NewLogger() pkg.Logger {
 	return &Logger{}
 }

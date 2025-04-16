@@ -1,3 +1,4 @@
+// Package zerolog sender
 package zerolog
 
 import (
@@ -7,7 +8,7 @@ import (
 
 type Printer struct{}
 
-func (_ Printer) Write(p []byte) (n int, err error) {
+func (pr Printer) Write(p []byte) (n int, err error) {
 	fmt.Println(string(p))
 	return 0, nil
 }

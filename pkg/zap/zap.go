@@ -1,3 +1,4 @@
+// Package zap logger
 package zap
 
 import (
@@ -13,42 +14,42 @@ type Logger struct {
 }
 
 // Debug debug
-func (log Logger) Debug(message string, args ...interface{}) {
+func (log *Logger) Debug(message string, args ...interface{}) {
 	log.log.With(log.fields()...).Debugf(message, args...)
 }
 
 // Info info
-func (log Logger) Info(message string, args ...interface{}) {
+func (log *Logger) Info(message string, args ...interface{}) {
 	log.log.With(log.fields()...).Infof(message, args...)
 }
 
 // Warn warn
-func (log Logger) Warn(message string, args ...interface{}) {
+func (log *Logger) Warn(message string, args ...interface{}) {
 	log.log.With(log.fields()...).Warnf(message, args...)
 }
 
 // Error error
-func (log Logger) Error(err error) {
+func (log *Logger) Error(err error) {
 	log.log.With(log.fields()...).Error(err.Error())
 }
 
 // ErrorWrap wraps error
-func (log Logger) ErrorWrap(message string, err error) {
+func (log *Logger) ErrorWrap(message string, err error) {
 	log.log.With(log.fields()...).Errorf("%s, reason: %v", message, err)
 }
 
 // Fatal fatal
-func (log Logger) Fatal(err error) {
+func (log *Logger) Fatal(err error) {
 	log.log.With(log.fields()...).Panicf(err.Error())
 }
 
 // FatalWrap wraps error
-func (log Logger) FatalWrap(message string, err error) {
+func (log *Logger) FatalWrap(message string, err error) {
 	log.log.With(log.fields()...).Panicf("%s, reason: %v", message, err)
 }
 
 // SetLevel set level
-func (log Logger) SetLevel(level pkg.LogLevel) {
+func (log *Logger) SetLevel(level pkg.LogLevel) {
 	switch level {
 	case pkg.DEBUG:
 		*log.log = *newWithLevel(zapcore.DebugLevel)
@@ -64,8 +65,8 @@ func (log Logger) SetLevel(level pkg.LogLevel) {
 }
 
 // WithFields preregister fields into logger
-func (log Logger) WithFields(data map[string]interface{}) pkg.Logger {
-	return Logger{
+func (log *Logger) WithFields(data map[string]interface{}) pkg.Logger {
+	return &Logger{
 		log:  log.log,
 		data: data,
 	}
@@ -73,7 +74,7 @@ func (log Logger) WithFields(data map[string]interface{}) pkg.Logger {
 
 // NewLogger new zap logger
 func NewLogger() pkg.Logger {
-	return Logger{
+	return &Logger{
 		log:  newWithLevel(zapcore.InfoLevel),
 		data: nil,
 	}

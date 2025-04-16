@@ -1,3 +1,4 @@
+// Package logrus logger
 package logrus
 
 import (
@@ -13,19 +14,16 @@ type Logger struct {
 	data map[string]interface{}
 }
 
-// Debug debug
 func (log *Logger) Debug(message string, args ...interface{}) {
 	log.log.WithFields(log.data).Debugf(message, args...)
 	log.data = nil
 }
 
-// Info info
 func (log *Logger) Info(message string, args ...interface{}) {
 	log.log.WithFields(log.data).Infof(message, args...)
 	log.data = nil
 }
 
-// Warn warn
 func (log *Logger) Warn(message string, args ...interface{}) {
 	log.log.WithFields(log.data).Warnf(message, args...)
 	log.data = nil
@@ -65,7 +63,7 @@ func (log *Logger) Fatal(err error) {
 	}
 	log.data["stacktrace"] = fmt.Sprintf("%s: %d", file, line)
 
-	log.log.WithFields(log.data).Fatalf(err.Error())
+	log.log.WithFields(log.data).Fatal(err.Error())
 	log.data = nil
 }
 
@@ -82,7 +80,7 @@ func (log *Logger) FatalWrap(message string, err error) {
 }
 
 // WithFields preregister fields into logger
-func (log Logger) WithFields(data map[string]interface{}) pkg.Logger {
+func (log *Logger) WithFields(data map[string]interface{}) pkg.Logger {
 	return &Logger{
 		log:  log.log,
 		data: data,
@@ -90,7 +88,7 @@ func (log Logger) WithFields(data map[string]interface{}) pkg.Logger {
 }
 
 // SetLevel set level
-func (log Logger) SetLevel(level pkg.LogLevel) {
+func (log *Logger) SetLevel(level pkg.LogLevel) {
 	switch level {
 	case pkg.DEBUG:
 		log.log.SetLevel(logrus.DebugLevel)
