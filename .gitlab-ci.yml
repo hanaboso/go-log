@@ -3,10 +3,6 @@ stages:
     - mirror
     - cleanup
 
-before_script:
-    - eval $(ssh-agent)
-    - ssh-add ~/.ssh/bob_the_builder_hanaboso
-
 test:
     stage: test
     script:
